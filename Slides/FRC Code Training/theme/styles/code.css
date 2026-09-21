@@ -1,0 +1,18 @@
+.mparors .code-content { position: absolute; left: var(--mparors-inset); right: 160px; top: 132px; bottom: 98px; }
+.mparors .code-note { position: absolute; left: var(--mparors-inset); right: 165px; bottom: 48px; font-size: 18px; color: var(--mparors-muted); }
+.mparors .code-split-content { position: absolute; left: var(--mparors-inset); right: 160px; top: 132px; bottom: 55px; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 32px; }
+.mparors .code-explanation { font-size: 20px; }
+.mparors .code-split-content { --mparors-code-size: 16px; }
+.mparors pre, .mparors code { font-family: var(--mparors-font-code) !important; font-variant-ligatures: none; }
+.mparors :not(pre) > code { color: #a9d2fa; background: #303030; padding: .08em .24em; border-radius: 3px; font-size: .85em; }
+.mparors pre.shiki, .mparors pre.slidev-code {
+  font-size: var(--mparors-code-size) !important; line-height: 1.55 !important;
+  padding: 18px 22px !important; border-radius: 0 !important;
+  background: #181c22 !important; border-left: 4px solid var(--mparors-rule);
+  text-align: left; overflow: auto; max-width: 100%; margin: 0;
+}
+.mparors pre code { font-size: inherit !important; line-height: inherit !important; background: transparent; padding: 0; }
+.mparors .slidev-code-wrapper { margin: 0; max-height: 100%; overflow: auto; }
+.mparors .line.highlighted { background-color: #2266bf33 !important; }
+.mparors .line.diff.add { background-color: #00968822 !important; }
+.mparors .line.diff.remove { background-color: #e06c7522 !important; }

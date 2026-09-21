@@ -1,0 +1,30 @@
+{
+  "name": "slidev-theme-mparors-dark",
+  "version": "1.0.0",
+  "private": true,
+  "keywords": [
+    "slidev-theme",
+    "frc",
+    "mparors"
+  ],
+  "engines": {
+    "slidev": ">=53.0.0"
+  },
+  "slidev": {
+    "colorSchema": "dark",
+    "defaults": {
+      "aspectRatio": "16/9",
+      "canvasWidth": 960,
+      "fonts": {
+        "sans": "Lexend",
+        "serif": "Comfortaa",
+        "mono": "JetBrains Mono",
+        "local": [
+          "Lexend",
+          "Comfortaa",
+          "JetBrains Mono"
+        ]
+      }
+    }
+  }
+}

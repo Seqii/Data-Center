@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing / Vite / Build outputs
+dist/
+.vite/
+.output/
+.nuxt/
+
+# Slidev exports and temporary files
+# Ignore generated PDFs, exported SPAs, or PNG/JPEG snapshots unless you want to track them
+*.pdf
+/*.png
+/*.jpg
+/.export/
+
+# Editor and OS files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*.log

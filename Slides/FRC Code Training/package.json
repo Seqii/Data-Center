@@ -1,0 +1,17 @@
+{
+  "name": "frc-code-training",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "java": "pnpm dev Java.md",
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "vue": "^3.5.33"
+  }
+}

@@ -1,15 +1,11 @@
 public class HelloWorld {
     @SuppressWarnings("unused")
 
+public static class main {
     public static void main(String[] args) {
         System.out.println("Hello World");
 
-        String firstName = "Gavin";
-        int age = 16;
 
-        String intro = "Hello I'm Gavin, I'm ";
-
-        System.out.println(intro + age);
 
         //single line comment
 
@@ -22,3 +18,4 @@ public class HelloWorld {
         }
     }
 
+}
