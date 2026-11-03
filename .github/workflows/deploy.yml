@@ -53,7 +53,7 @@ jobs:
             base="/$repo/"
           fi
 
-          files=(*.md)
+          files=(Slides/FRC\ Code\ Training/*.md)
 
           if (( ${#files[@]} == 0 )); then
             echo "No presentations found in decks/"
