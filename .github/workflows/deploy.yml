@@ -13,7 +13,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: .Slides/FRC-Code-Training/
+    working-directory: Slides/FRC Code Training
 
 concurrency:
   group: github-pages
@@ -38,7 +38,7 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          cache-dependency-path: FRC-Code-Training/pnpm-lock.yaml
+          cache-dependency-path: Slides/FRC Code Training/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
@@ -58,10 +58,15 @@ jobs:
             base="/$repo/"
           fi
 
-          files=(Slides/FRC\ Code\ Training/*.md)
+          files=()
+          for file in *.md; do
+            if [[ "$file" != "README.md" ]]; then
+              files+=("$file")
+            fi
+          done
 
           if (( ${#files[@]} == 0 )); then
-            echo "No presentations found in decks/"
+            echo "No presentations found in Slides/FRC Code Training/"
             exit 1
           fi
 
@@ -74,6 +79,7 @@ jobs:
             pnpm exec slidev build "$file" \
               --out "dist/$name" \
               --base "${base}${name}/" \
+              --router-mode hash \
               --without-notes
           done
 
@@ -121,7 +127,7 @@ jobs:
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:
-          path: dist
+          path: Slides/FRC Code Training/dist
 
   deploy:
     needs: build
