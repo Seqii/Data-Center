@@ -11,6 +11,10 @@ permissions:
   pages: write
   id-token: write
 
+defaults:
+  run:
+    working-directory: .Slides/FRC-Code-Training/
+
 concurrency:
   group: github-pages
   cancel-in-progress: false
@@ -34,6 +38,7 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
+          cache-dependency-path: FRC-Code-Training/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
