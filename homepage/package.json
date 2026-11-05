@@ -1,0 +1,8 @@
+{
+  "name": "data-center-homepage",
+  "private": true,
+  "type": "module",
+  "scripts": {"dev": "node scripts/catalog.mjs && vite --host 127.0.0.1", "build": "node scripts/catalog.mjs && vite build", "preview": "vite preview --host 127.0.0.1"},
+  "dependencies": {"@headlessui/react": "^2.2.0", "react": "^19.0.0", "react-dom": "^19.0.0", "lucide-react": "^0.468.0"},
+  "devDependencies": {"vite": "^6.0.0"}
+}
