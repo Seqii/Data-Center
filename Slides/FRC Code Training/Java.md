@@ -718,7 +718,7 @@ Scope is where a variable can be used.
 int score = 5;
 
 if (score > 0) {
-  int bonus = 1;
+  int bonus = 1; //this is called a "local variable"
   score += bonus;
 }
 ```
@@ -927,6 +927,8 @@ sameMotor.setSpeed(0.8);
 
 Only one `new` runs here, so there is one object.
 
+This is also the difference between primitive and reference variables.
+
 ::right::
 
 - Both variables refer to that same object.
@@ -937,21 +939,46 @@ Assigning a reference to another variable gives us another way to reach the same
 
 ---
 class: compact
-brand: false
 ---
 
-# Classes in FRC
+# Libraries and Imports
+
+Libraries are just other code you can use for example...
+- WPIlib, REV Hardware, PathplannerLib
 
 ```java
-TalonFX motor = new TalonFX(1);
+import com.revrobotics.spark.*;
+import edu.wpi.first.wpilibj.XboxController;
+```
+
+- An `import` statement tells Java what class to import to that file.
+- WPILib and **vendor libraries** supply these classes.
+- We can use their methods without writing those classes ourselves.
+- The `*` symbol means import all avalible classes from that package.
+
+<!--
+Sources:
+https://api.ctr-electronics.com/phoenix6/stable/java/com/ctre/phoenix6/hardware/TalonFX.html
+https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/XboxController.html
+-->
+
+---
+class: compact
+brand: true
+---
+
+# Example in FRC
+
+```java
+SparkBase motor = new SparkMax(config, kResetSafeParameters);
 XboxController controller = new XboxController(0);
 ```
 
-- `TalonFX` and `XboxController` are classes from libraries.
+- `SparkBase` and `XboxController` are classes from libraries.
 - `motor` and `controller` hold references to objects.
 - Each `new` creates an object we can use through its variable.
 
-The motor object's ID is `1`. The controller uses Driver Station port `0`.
+The motor takes a config and a safe parameters setting. The controller uses Driver Station port `0`.
 
 <!--
 Sources:
@@ -983,31 +1010,6 @@ Source: https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpil
 -->
 
 ---
-class: compact
----
-
-# Library Classes and Imports
-
-At the top of a Java file:
-
-```java
-import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.XboxController;
-```
-
-- An `import` tells Java which class name we mean.
-- WPILib and vendor libraries supply these classes.
-- We can use their methods without writing those classes ourselves.
-
-The FRC examples assume these libraries and their imports are available.
-
-<!--
-Sources:
-https://api.ctr-electronics.com/phoenix6/stable/java/com/ctre/phoenix6/hardware/TalonFX.html
-https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/XboxController.html
--->
-
----
 layout: section
 ---
 
@@ -1033,7 +1035,7 @@ public class Motor {
 ```
 
 ::note::
-A constructor sets up a new object. Its name matches the class, and it has no return type, including no `void`.
+A constructor like a method that gets called whenever a new object of that class is created. Its name matches the class, and it has no return type, including no `void`.
 
 ---
 layout: two-cols
@@ -1119,14 +1121,14 @@ new Rotation2d() represents a zero rotation. Pose2d and Rotation2d require their
 layout: section
 ---
 
-# Fields, Methods, Parameters
+# Fields - This - Examples
 
 ---
 layout: code
 class: compact
 ---
 
-# Reading a Shooter Class
+# Shooter Class
 
 ::code::
 
@@ -1143,7 +1145,7 @@ public class Shooter {
 ```
 
 ::note::
-`targetSpeed` is a field. The setter changes it. The getter returns its current value to the caller.
+`targetSpeed` is a field. The setter changes it. The getter returns its current value.
 
 ---
 layout: two-cols
@@ -1203,27 +1205,7 @@ public void setTargetSpeed(
 - `requested` is a local variable created inside the method.
 - `targetSpeed` is the object's field.
 
-Local variables are only available within their scope. The field keeps the stored value after the method finishes.
-
----
-layout: code
-class: compact
----
-
-# Return Values
-
-::code::
-
-```java
-Shooter shooter = new Shooter();
-shooter.setTargetSpeed(0.7);
-
-double currentTarget = shooter.getTargetSpeed();
-System.out.println(currentTarget); // 0.7
-```
-
-::note::
-The getter returns a `double`. The caller can store that return value in a local variable, print it, or use it in another calculation.
+Local variables are only available within their scope. If you want to keep a local variable outside it's scope you have to assign a field to it's value.
 
 ---
 layout: code
@@ -1269,12 +1251,32 @@ brand: false
 table { font-size: 18px; width: 100%; }
 th, td { padding: 0.25rem 0.5rem; }
 </style>
+---
+class: compact
+brand: false
+---
+
+# Static Fields
+
+```java
+public class RobotSettings {
+  public static final double DRIVE_SPEED = 0.5;
+}
+```
+
+Use it with the class name:
+
+```java
+double speed = RobotSettings.DRIVE_SPEED;
+```
+
+`static` makes the field belong to the class. `final` means we cannot assign a new value to this field after initialization.
 
 ---
 layout: section
 ---
 
-# Public and Private
+# Access and Static
 
 ---
 layout: two-cols
@@ -1282,7 +1284,7 @@ class: compact
 brand: false
 ---
 
-# Access to a Class
+# Access Modifiers
 
 ::left::
 
@@ -1308,58 +1310,6 @@ private double targetSpeed;
 ```
 
 Public methods give other code a controlled way to work with private data.
-
----
-class: compact
-brand: false
----
-
-# Encapsulation
-
-Keep internal data private. Expose the methods other code should use.
-
-```java
-Shooter shooter = new Shooter();
-shooter.setTargetSpeed(0.5);
-
-// Direct access from another class will not compile:
-// shooter.targetSpeed = 0.5;
-```
-
-The setter gives us one place to add checks or change how the shooter works later.
-
----
-layout: code
-class: compact
----
-
-# Encapsulation in FRC
-
-::code::
-
-```java
-public class Shooter {
-  private TalonFX motor = new TalonFX(3);
-
-  public void runShooter() {
-    motor.set(1.0);
-  }
-}
-```
-
-::note::
-Other code calls `shooter.runShooter()`. The class handles the motor internally. This is the same pattern we use in subsystems.
-
-<!--
-Source: https://api.ctr-electronics.com/phoenix6/stable/java/com/ctre/phoenix6/hardware/TalonFX.html
-TalonFX.set(double) requests duty-cycle output. This example needs the CTRE import and robot configuration.
--->
-
----
-layout: section
----
-
-# Static
 
 ---
 layout: two-cols
@@ -1401,128 +1351,6 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Xbox
 -->
 
 ---
-class: compact
-brand: false
----
-
-# Static Fields
-
-```java
-public class RobotSettings {
-  public static final double DRIVE_SPEED = 0.5;
-}
-```
-
-Use it with the class name:
-
-```java
-double speed = RobotSettings.DRIVE_SPEED;
-```
-
-`static` makes the field belong to the class. `final` means we cannot assign a new value to this field after initialization.
-
----
-class: compact
-brand: false
----
-
-# When to Use Static
-
-- Instance fields keep separate data for each object, like each motor's speed.
-- Static fields belong to the class and have one shared value.
-- Static methods work without a particular object, like `Math.abs()`.
-
-Most device fields and mechanism methods in our subsystems belong to objects.
-
-Adding `static` changes who owns a field or method. Understand that before using it to fix an error.
-
----
-layout: section
----
-
-# Enums and Robot States
-
----
-layout: two-cols
-class: compact
-brand: false
----
-
-# A Fixed Set of Options
-
-::left::
-
-In `IntakeState.java`:
-
-```java
-public enum IntakeState {
-  IN,
-  OUT,
-  STOPPED
-}
-```
-
-::right::
-
-```java
-IntakeState state =
-    IntakeState.IN;
-state = IntakeState.STOPPED;
-```
-
-- An enum gives meaningful names to allowed choices.
-- `state` can hold an `IntakeState` value.
-- Java catches misspelled or unknown option names.
-
----
-class: compact
-brand: false
----
-
-# Checking an Enum Value
-
-```java
-IntakeState state = IntakeState.IN;
-
-if (state == IntakeState.IN) {
-  System.out.println("Pulling a game piece in");
-}
-```
-
-- Use `==` to compare enum values.
-- The value tells us which behavior we want.
-- A `switch` can choose behavior for each enum option too.
-
----
-layout: two-cols
-class: compact
-brand: false
----
-
-# Enums in Robot Code
-
-::left::
-
-```java
-public enum ScoringLevel {
-  LOW,
-  MID,
-  HIGH
-}
-```
-
-::right::
-
-```java
-ScoringLevel level =
-    ScoringLevel.HIGH;
-```
-
-Useful for mechanism states, drive modes, or scoring levels.
-
-Choose an enum when a value should come from a fixed set. Use a number for a measurement like distance or speed.
-
----
 layout: section
 ---
 
@@ -1542,12 +1370,12 @@ brand: false
 public class Animal {
   public void speak() {
     System.out.println(
-        "Animal sound");
+      "Animal sound");
   }
 }
 ```
 
-`Animal` is the superclass / parent class.
+`Animal` is the superclass / parent class. You can use methods defined there in any of it's child classes.
 
 ::right::
 
@@ -1556,26 +1384,14 @@ public class Dog extends Animal {
 }
 ```
 
-`Dog` is the subclass / child class. It inherits accessible behavior from `Animal`.
-
-Each public class goes in its own file.
-
----
-layout: code
-class: compact
----
-
-# Using Inherited Behavior
-
-::code::
-
+`Dog` is the subclass / child class.
+<br>
+<br>
 ```java
-Dog dog = new Dog();
-dog.speak(); // Animal sound
+Dog myPet = new Dog();
+myPet.speak();
 ```
 
-::note::
-We can call `speak()` on the dog even though we wrote that method in `Animal`. The dog inherits it.
 
 ---
 class: compact
@@ -1587,15 +1403,18 @@ brand: false
 ```java
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class DriveSubsystem extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase {
+  public void shoot(speed){
+    setShootSpeed(speed) //88%
+    isShooting = true;
+  }
 }
 ```
 
 - Our class builds on WPILib's `SubsystemBase`.
 - The base class handles common subsystem setup.
-- We add the fields and methods for our drivetrain.
+- We add the fields and methods for our shooter.
 
-`extends` connects class definitions. `new DriveSubsystem()` creates an object of our class.
 
 <!--
 Source: https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj2/command/SubsystemBase.html
@@ -1619,12 +1438,13 @@ class: compact
 
 ```java
 public interface Drivable {
-  void drive();
+  void drive(speed);
+  void stop();
 }
 ```
 
 ::note::
-An interface describes behavior a class promises to provide. This one requires a public `drive()` method that returns `void` and takes no parameters.
+An interface describes behavior a class should provide. This one requires a public `drive()` and `stop()` method, one of which has `speed` as a parameter.
 
 ---
 layout: code
@@ -1637,14 +1457,18 @@ class: compact
 
 ```java
 public class PracticeDrive implements Drivable {
-  public void drive() {
-    System.out.println("Driving");
+  public void drive(speed) {
+    driveMotor.setSpeed(speed)
+  }
+
+  public void stop() {
+    driveMotor.setSpeed(0.0)
   }
 }
 ```
 
 ::note::
-`implements Drivable` makes the promise. This class must provide the required method. Here we use a print as the practice behavior.
+`implements Drivable` means that this class defines the methods in the `Drivable` interface. This class must provide the required method.
 
 ---
 layout: two-cols
@@ -1652,27 +1476,35 @@ class: compact
 brand: false
 ---
 
-# Interfaces in WPILib
+# Interfaces in Our Code
 
 ::left::
 
-## Subsystem
-
-WPILib's `Subsystem` is an interface describing subsystem behavior.
-
-`SubsystemBase` already implements it and provides common setup.
+## Example Structure
+```
+Subsystems/Drive/
+ ├── ModuleIO.java
+ ├── ModuleSparkIO.java
+ └── ModuleSimIO.java
+```
+- `ModuleIO.java` is an interface
+- `ModuleSparkIO.java` implements that interface for a real robot
+- `ModuleSimIO.java` implements that interface for the robot simulation
 
 ::right::
 
+## Default
+You can also have a method in an interface with a **default** definition. If you define that method in a class later it will be overriden.
 ```java
-public class DriveSubsystem
-    extends SubsystemBase {
+public interface Shooter {
+  void default shoot(motor) {
+    motor.setSpeed(0.75);
+  }
+  void default stop(motor) {
+    motor.setSpeed(0.0)
+  }
 }
 ```
-
-This is why our normal subsystem code can extend `SubsystemBase`.
-
-Look for `extends` and `implements` when reading library class definitions.
 
 <!--
 Sources:
@@ -1696,222 +1528,40 @@ brand: false
 
 ::left::
 
-In `Animal.java`:
+In `ProcessMaterial.java`:
 
 ```java
-public class Animal {
-  public void speak() {
-    System.out.println(
-        "Animal sound");
+public class ProcessMaterial {
+  public void cut(material) {
+    if material == wood {
+      bandsaw.cut();
+    } else if material == metal {
+      cnc.cut();
+    }
   }
 }
 ```
 
 ::right::
 
-In `Dog.java`:
+In `NoPowerTools.java`:
 
 ```java
-public class Dog extends Animal {
+public class NoPowerTools extends ProcessMaterial {
   @Override
-  public void speak() {
-    System.out.println("Woof");
+  public void cut(material) {
+    if material == wood {
+      handsaw.cut();
+    } else if material == metal {
+      System.out.println(
+        "can't cut without CNC")
+    }
   }
 }
 ```
-
-Calling `speak()` on a `Dog` now prints `Woof`.
-
----
-layout: code
-class: compact
----
-
-# Override in FRC
-
-::code::
-
-```java
-public class DriveSubsystem extends SubsystemBase {
-  private int updates = 0;
-
-  @Override
-  public void periodic() {
-    updates++;
-  }
-}
-```
-
-::note::
-`periodic()` is part of the subsystem API. The scheduler calls it each iteration, usually every 20 ms. We supply the behavior for this subsystem.
-
-<!--
-Source: https://docs.wpilib.org/en/stable/docs/software/commandbased/subsystems.html
-The command scheduler must run for subsystem periodic methods to run. SubsystemBase handles registration.
--->
-
----
-class: compact
-brand: false
----
-
-# What @Override Checks
-
-```java
-@Override
-public void periodic() {
-}
-```
-
-- We are providing our version of an inherited or interface method.
-- Java checks that the method actually matches one we can override.
-- A typo like `periodc()` makes Java report an error here.
-
-The annotation helps catch mistakes. The method's name and parameters still have to match.
-
----
-layout: two-cols
-class: compact
-brand: false
----
-
-# Overloading and Overriding
-
-::left::
-
-## Overloading
-
-Same method name, different parameter lists.
-
-```java
-setSpeed(0.5);
-setSpeed(0.5, 0.4);
-```
-
-The arguments choose which version to call.
-
-::right::
-
-## Overriding
-
-A class supplies its version of inherited behavior.
-
-```java
-@Override
-public void periodic() {
-  updates++;
-}
-```
-
-The name and parameter types match the inherited method.
 
 ---
 layout: section
 ---
 
-# Reading Robot Code
-
----
-layout: code
-class: compact
----
-
-# A Subsystem - Setup
-
-::code::
-
-```java
-public class ShooterSubsystem extends SubsystemBase {
-  private TalonFX motor;
-  private double targetSpeed = 0.0;
-
-  public ShooterSubsystem(int motorId) {
-    motor = new TalonFX(motorId);
-  }
-}
-```
-
-::note::
-Our class extends `SubsystemBase`. Each object stores its motor and target speed. The constructor receives the motor ID and creates the motor object.
-
-<!--
-Sources:
-https://api.ctr-electronics.com/phoenix6/stable/java/com/ctre/phoenix6/hardware/TalonFX.html
-https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj2/command/SubsystemBase.html
-This class requires the TalonFX and SubsystemBase imports shown earlier.
--->
-
----
-layout: code
-class: compact
----
-
-# A Subsystem - Methods
-
-::code::
-
-```java
-public void setTargetSpeed(double speed) {
-  targetSpeed = speed;
-}
-
-@Override
-public void periodic() {
-  motor.set(targetSpeed);
-}
-```
-
-::note::
-Add these methods inside `ShooterSubsystem`. The setter stores the requested output. `periodic()` sends it to the motor when the scheduler runs.
-
-<!--
-Sources:
-https://api.ctr-electronics.com/phoenix6/stable/java/com/ctre/phoenix6/hardware/TalonFX.html
-https://docs.wpilib.org/en/stable/docs/software/commandbased/subsystems.html
--->
-
----
-class: compact
-brand: false
----
-
-# A Subsystem - Using It
-
-Inside another class's method:
-
-```java
-ShooterSubsystem shooter = new ShooterSubsystem(3);
-shooter.setTargetSpeed(0.5);
-```
-
-- `ShooterSubsystem` is the class.
-- `shooter` holds a reference to our new object.
-- `3` goes to the constructor's `motorId` parameter.
-- `0.5` goes to the method's `speed` parameter.
-
-Other code uses the public method. The subsystem keeps its motor field private.
-
----
-class: compact
-brand: false
----
-
-# Quick Check
-
-```java
-ShooterSubsystem left = new ShooterSubsystem(3);
-ShooterSubsystem right = new ShooterSubsystem(4);
-left.setTargetSpeed(0.5);
-right.setTargetSpeed(0.2);
-```
-
-- How many `ShooterSubsystem` objects did we create?
-- Which names are classes, variables, methods, and arguments?
-- Does changing `left`'s target change `right`'s target?
-
-<!--
-Answers: Two ShooterSubsystem objects. Each also creates its own TalonFX object.
-ShooterSubsystem is a class. left and right are local reference variables.
-setTargetSpeed is a method. 3 and 4 are constructor arguments, while 0.5 and 0.2 are method arguments.
-The subsystem targetSpeed fields are instance fields, so each object keeps its own value.
--->
+# END

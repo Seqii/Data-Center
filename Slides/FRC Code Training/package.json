@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "java": "pnpm dev Java.md",
+    "wpi": "pnpm dev WPIlib.md",
     "build": "slidev build",
     "dev": "slidev --open",
     "export": "slidev export"
