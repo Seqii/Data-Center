@@ -3,7 +3,7 @@ name: Deploy Data Center
 
 on:
   push:
-    branches: [main]
+    branches: [MPAror-Training-Copy]
   workflow_dispatch:
 
 permissions:
