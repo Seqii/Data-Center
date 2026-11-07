@@ -1,0 +1,19 @@
+/* Measured from the 720 × 405 pt source, scaled to a 960 × 540 canvas. */
+:root {
+  --mparors-bg: #212121;
+  --mparors-panel: #303030;
+  --mparors-text: #ffffff;
+  --mparors-muted: #adadad;
+  --mparors-heading: #6fa8dc;
+  --mparors-title: #6d9eeb;
+  --mparors-subtitle: #3d85c6;
+  --mparors-rule: #2266bf;
+  --mparors-link: #4dd0e1;
+  --mparors-font-heading: 'Comfortaa', sans-serif;
+  --mparors-font-body: 'Lexend', sans-serif;
+  --mparors-font-code: 'JetBrains Mono', monospace;
+  --mparors-heading-size: 37.333px;
+  --mparors-body-size: 24px;
+  --mparors-code-size: 19px;
+  --mparors-inset: 42.32px;
+}
