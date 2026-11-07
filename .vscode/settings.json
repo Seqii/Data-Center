@@ -1,9 +1,0 @@
-{
-    "CodeGPT.apiKey": "CodeGPT Plus Beta",
-    "slidev.include": [
-        "**/slides.md",
-        "Slides/FRC Code Training/Java.md",
-        "Slides/FRC Code Training/Java.md",
-        "Slides/FRC Code Training/WPIlib.md"
-    ]
-}

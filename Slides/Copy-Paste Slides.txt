@@ -1,7 +1,0 @@
-SECTION:
----
-layout: section
----
-
-# 
----
