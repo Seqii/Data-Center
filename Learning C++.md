@@ -1,4 +1,5 @@
 (from some random dude on reddit)
+
 I started with Java, but when I tried learning C++ I got really caught up with the concept of pointers. Turns out, Java uses pointers all the time -- they're just called references in Java. The main difference I see with C++ is that you're not forced to allocate every object on the heap (using new), but you can allocate them on the stack like any normal primitive.
 
 Some things you need to get used to are headers. In Java, you define your class and the implementation of that class in the same file. In C++ the definition of the class goes in the header, and the implementation of the functions goes in the .cpp file.
